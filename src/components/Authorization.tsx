@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'react-cookies';
 import { useHistory } from 'react-router-dom';
 
-interface IAuthorization {
+interface IProps {
   children: React.ReactNode;
 }
 
-const Authorization = ({ children }: IAuthorization) => {
+const Authorization: React.FC<IProps> = ({ children }: IProps) => {
   const [verify, setVerify] = useState(false);
   const history = useHistory();
 
@@ -60,7 +60,7 @@ const Authorization = ({ children }: IAuthorization) => {
         const refreshed = await tokenRefresh();
         if (!refreshed) {
           setVerify(false);
-          history.push('/');
+          history.push('/signin');
           return;
         }
       }

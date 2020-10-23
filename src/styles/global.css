@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Hi Melody';
+  src: url(/HiMelody-Regular.ttf);
+}
+
 body,
 html {
   margin: 0;
@@ -7,5 +12,6 @@ html {
 * {
   background-color: #fafafa;
   color: #1a1a1a;
-  font-family: NanumMyeongjo;
+  font-size: 26px;
+  font-family: 'Hi Melody';
 }

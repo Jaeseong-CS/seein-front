@@ -2,30 +2,47 @@ import React, { useEffect, useRef, useState } from 'react';
 import Cookies from 'react-cookies';
 import styled, { keyframes } from 'styled-components';
 
-const IntroAnimation = keyframes`
+const IntroBackgroundAnimation = keyframes`
   0% {
-    opacity: 0%;
+    opacity: 1;
   }
-  30% {
-    opacity: 100%;
-  }
-  80% {
-    opacity: 100%;
+  99% {
+    opacity: 1;
   }
   100% {
-    opacity: 0%;
+    opacity: 0;
   }
+`;
+
+const IntroWrapperAnimation = keyframes`
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
+const IntroBackground = styled.div`
+  position: absolute;
+  z-index: 9999;
+  animation: ${IntroBackgroundAnimation} 2.6s both ease-in-out;
 `;
 
 const IntroWrapper = styled.div`
   display: flex;
-  background-color: #fafafa;
-  height: 95vh;
+  width: 100vw;
+  height: 100vh;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  z-index: 9999;
-  animation: ${IntroAnimation} 2.6s both ease-in-out;
+  animation: ${IntroWrapperAnimation} 2.6s both ease-in-out;
 `;
 
 const IntroTitle = styled.div`
@@ -79,11 +96,13 @@ const Intro: React.FC = () => {
   return (
     <>
       {!intro && (
-        <IntroWrapper ref={introWrapper}>
-          <IntroTitle>시인</IntroTitle>
-          <IntroSub>See In</IntroSub>
-          <IntroMessage>시인은 사물을 보는 것 - 김영하</IntroMessage>
-        </IntroWrapper>
+        <IntroBackground ref={introWrapper}>
+          <IntroWrapper>
+            <IntroTitle>시인</IntroTitle>
+            <IntroSub>See In</IntroSub>
+            <IntroMessage>시인은 사물을 보는 것 - 김영하</IntroMessage>
+          </IntroWrapper>
+        </IntroBackground>
       )}
     </>
   );

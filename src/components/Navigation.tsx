@@ -17,14 +17,20 @@ const NavigationContainer = styled.ul`
 
 const NavigationItem = styled.li`
   float: left;
-  padding: 0.6em;
-  margin-left: 1.7em;
-  margin-right: 1.7em;
+  padding: 0.1em;
+  margin-left: 1.4em;
+  margin-right: 1.4em;
 `;
 
 const NavigationLink = styled(Link)`
   text-decoration: none;
   font-size: 1.3em;
+  color: #8f8f8f;
+  transition: 0.3s ease-out;
+
+  &:hover {
+    color: #1a1a1a;
+  }
 `;
 
 const Navigation: React.FC = () => {
@@ -42,7 +48,7 @@ const Navigation: React.FC = () => {
     <NavigationWrapper>
       <NavigationContainer>
         <NavigationItem>
-          <NavigationLink to="/">메인</NavigationLink>
+          <NavigationLink to="/">홈</NavigationLink>
         </NavigationItem>
         <NavigationItem>
           {token ? (

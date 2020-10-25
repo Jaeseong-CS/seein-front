@@ -1,11 +1,37 @@
-import './styles/global.css';
-
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import Intro from './components/Intro';
+import ScrollBar from './components/ScrollBar';
 import Router from './Router';
+
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Hi Melody';
+    src: url(/HiMelody-Regular.ttf);
+  }
+
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+  }
+
+  * {
+    color: #1a1a1a;
+    font-size: 32px;
+    font-family: 'Hi Melody';
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    user-select:none;
+
+    &::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+  }
+`;
 
 const Wrapper = styled(BrowserRouter)`
   flex: 1 0 auto;
@@ -14,7 +40,9 @@ const Wrapper = styled(BrowserRouter)`
 
 const App: React.FC = () => (
   <>
+    <GlobalStyle />
     <Intro />
+    <ScrollBar />
     <Wrapper>
       <Router />
     </Wrapper>

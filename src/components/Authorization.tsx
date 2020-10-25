@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'react-cookies';
 import { useHistory } from 'react-router-dom';
 
-interface IProps {
+interface IAuthorizationProps {
   children: React.ReactNode;
 }
 
-const Authorization: React.FC<IProps> = ({ children }: IProps) => {
+const Authorization: React.FC<IAuthorizationProps> = ({ children }: IAuthorizationProps) => {
   const [verify, setVerify] = useState(false);
   const history = useHistory();
 

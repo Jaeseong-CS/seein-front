@@ -33,6 +33,7 @@ const IntroBackground = styled.div`
   position: absolute;
   z-index: 9999;
   animation: ${IntroBackgroundAnimation} 2.6s both ease-in-out;
+  background-color: #ffffff;
 `;
 
 const IntroWrapper = styled.div`
@@ -48,15 +49,15 @@ const IntroWrapper = styled.div`
 const IntroTitle = styled.div`
   font-size: 5.8vw;
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1024px) {
     font-size: 11.4vw;
   }
 `;
 
 const IntroSub = styled.div`
-  font-size: 1.8vw;
+  font-size: 2.3vw;
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1024px) {
     font-size: 4.7vw;
   }
 `;
@@ -64,7 +65,7 @@ const IntroSub = styled.div`
 const IntroMessage = styled.div`
   font-size: 2.8vw;
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1024px) {
     font-size: 5.5vw;
   }
 `;

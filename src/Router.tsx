@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Route, Switch, useLocation,
-} from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 
@@ -20,7 +18,7 @@ const Wrapper = styled.div`
 
   .fade-enter.fade-enter-active {
     opacity: 1;
-    transition: opacity 300ms ease-out;
+    transition: opacity 150ms ease-out 300ms;
   }
 
   .fade-exit {
@@ -29,7 +27,7 @@ const Wrapper = styled.div`
 
   .fade-exit.fade-exit-active {
     opacity: 0;
-    transition: opacity 300ms ease-out;
+    transition: opacity 150ms ease-out;
   }
 
   div.transitionGroup {
@@ -41,6 +39,13 @@ const Wrapper = styled.div`
     width: 100%;
     top: 0;
     left: 0;
+    padding-top: 4em;
+    padding-bottom: 1em;
+
+    @media screen and (max-width: 1024px) {
+      padding-top: 0;
+      padding-bottom: 2em;
+    }
   }
 `;
 
@@ -51,7 +56,7 @@ const Router: React.FC = () => {
     <Wrapper>
       <Navigation />
       <TransitionGroup className="transitionGroup">
-        <CSSTransition key={location.key} timeout={{ enter: 300, exit: 300 }} classNames="fade">
+        <CSSTransition key={location.key} timeout={{ enter: 450, exit: 150 }} classNames="fade">
           <section className="routeSection">
             <Switch location={location}>
               <Route exact path="/" component={Home} />

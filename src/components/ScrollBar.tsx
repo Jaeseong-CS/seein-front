@@ -10,6 +10,10 @@ const ScrollBarWrapper = styled.div`
   z-index: 99;
   opacity: 0.7;
   transition: 0.5s ease-out;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const ScrollBarIndicator = styled.div`

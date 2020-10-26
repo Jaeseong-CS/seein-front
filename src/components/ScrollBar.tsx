@@ -31,11 +31,12 @@ const ScrollBar: React.FC = () => {
     const setScrollBar = () => {
       timer += 1;
       scrollBarWrapper.current!.style.opacity = '0.7';
-      const wScroll = document.documentElement.scrollTop;
-      const wHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const element = document.documentElement;
+      const wScroll = element.scrollTop / 3;
+      const wHeight = (element.scrollHeight - element.clientHeight) / 3;
       scrollBarIndicator.current!.style.top = `calc(${wScroll}px + 2.2em)`;
       scrollBarIndicator.current!.style.height = `calc(${
-        (1 - wHeight / document.documentElement.clientHeight) * 100
+        (1 - wHeight / element.clientHeight) * 100
       }vh - 2.2em)`;
       ((t) => {
         setTimeout(() => {
@@ -46,13 +47,12 @@ const ScrollBar: React.FC = () => {
       })(timer);
     };
 
-    window.addEventListener('load', setScrollBar);
     window.addEventListener('scroll', setScrollBar);
     window.addEventListener('resize', setScrollBar);
   }, []);
 
   const mouseMove = (e: MouseEvent) => {
-    document.documentElement.scrollTop += e.movementY;
+    document.documentElement.scrollTop += e.movementY * 3;
   };
 
   return (

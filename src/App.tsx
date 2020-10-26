@@ -3,7 +3,6 @@ import { BrowserRouter } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import Intro from './components/Intro';
-import ScrollBar from './components/ScrollBar';
 import Router from './Router';
 
 const GlobalStyle = createGlobalStyle`
@@ -42,7 +41,6 @@ const App: React.FC = () => (
   <>
     <GlobalStyle />
     <Intro />
-    <ScrollBar />
     <Wrapper>
       <Router />
     </Wrapper>

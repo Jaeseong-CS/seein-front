@@ -4,6 +4,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 
 import Navigation from './components/Navigation';
+import ScrollBar from './components/ScrollBar';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import SignIn from './pages/SignIn';
@@ -69,6 +70,7 @@ const Router: React.FC = () => {
           </section>
         </CSSTransition>
       </TransitionGroup>
+      <ScrollBar />
     </Wrapper>
   );
 };

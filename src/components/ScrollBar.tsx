@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ScrollBarWrapper = styled.div`
@@ -30,60 +31,68 @@ const ScrollBarIndicator = styled.div`
 const ScrollBar: React.FC = () => {
   const scrollBarWrapper = useRef<HTMLDivElement>(null);
   const scrollBarIndicator = useRef<HTMLDivElement>(null);
-  let hover = false;
+  const hover = useRef<boolean>(false);
+  const press = useRef<boolean>(false);
+  const timer = useRef<number>(0);
+  const location = useLocation();
 
-  useEffect(() => {
-    let timer = 0;
-
-    const setScrollBar = () => {
-      timer += 1;
-      scrollBarWrapper.current!.style.opacity = '0.7';
-      const element = document.documentElement;
-      const wScroll = element.scrollTop / 3;
-      const wHeight = (element.scrollHeight - element.clientHeight) / 3;
-      scrollBarIndicator.current!.style.top = `calc(${wScroll}px + 2.3em)`;
-      scrollBarIndicator.current!.style.height = `calc(${
-        (1 - wHeight / element.clientHeight) * 100
-      }vh - 2.4em)`;
-      ((t) => {
-        setTimeout(() => {
-          if (!hover && timer === t) {
-            scrollBarWrapper.current!.style.opacity = '0';
-          }
-        }, 500);
-      })(timer);
-    };
-
-    window.addEventListener('load', setScrollBar);
-    window.addEventListener('scroll', setScrollBar);
-    window.addEventListener('resize', setScrollBar);
-  }, [hover]);
+  const setScrollBar = useCallback(() => {
+    timer.current += 1;
+    scrollBarWrapper.current!.style.opacity = '0.7';
+    const element = document.documentElement;
+    const wScroll = element.scrollTop / 3;
+    const wHeight = (element.scrollHeight - element.clientHeight) / 3;
+    scrollBarIndicator.current!.style.top = `calc(${wScroll}px + 2.3em)`;
+    scrollBarIndicator.current!.style.height = `calc(${
+      (1 - wHeight / element.clientHeight) * 100
+    }vh - 2.4em)`;
+    ((t) => {
+      setTimeout(() => {
+        if (!hover.current && !press.current && timer.current === t) {
+          scrollBarWrapper.current!.style.opacity = '0';
+        }
+      }, 500);
+    })(timer.current);
+  }, []);
 
   const mouseMove = (e: MouseEvent) => {
-    hover = true;
     document.documentElement.scrollTop += e.movementY * 3;
   };
+
+  const mouseUp = useCallback(() => {
+    press.current = false;
+    scrollBarWrapper.current!.style.opacity = '0';
+    window.removeEventListener('mousemove', mouseMove);
+  }, []);
+
+  useEffect(() => {
+    setScrollBar();
+  }, [setScrollBar, location]);
+
+  useEffect(() => {
+    window.addEventListener('mouseup', mouseUp);
+    window.addEventListener('scroll', setScrollBar);
+    window.addEventListener('resize', setScrollBar);
+  }, [mouseUp, setScrollBar]);
 
   return (
     <ScrollBarWrapper
       onMouseEnter={() => {
-        hover = true;
+        hover.current = true;
         scrollBarWrapper.current!.style.opacity = '0.7';
       }}
       onMouseLeave={() => {
-        hover = false;
-        scrollBarWrapper.current!.style.opacity = '0';
+        hover.current = false;
+        if (!press.current) {
+          scrollBarWrapper.current!.style.opacity = '0';
+        }
       }}
       ref={scrollBarWrapper}
     >
       <ScrollBarIndicator
         onMouseDown={(e) => {
           if (e.button === 0) {
-            window.addEventListener('mouseup', () => {
-              hover = false;
-              scrollBarWrapper.current!.style.opacity = '0';
-              window.removeEventListener('mousemove', mouseMove);
-            });
+            press.current = true;
             window.addEventListener('mousemove', mouseMove);
           }
         }}

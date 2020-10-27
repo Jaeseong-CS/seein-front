@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Cookies from 'react-cookies';
 import styled, { keyframes } from 'styled-components';
 
-const IntroBackgroundAnimation = keyframes`
+const WrapperAnimation = keyframes`
   0% {
     opacity: 1;
   }
@@ -14,7 +14,7 @@ const IntroBackgroundAnimation = keyframes`
   }
 `;
 
-const IntroWrapperAnimation = keyframes`
+const ContainerAnimation = keyframes`
   0% {
     opacity: 0;
   }
@@ -29,24 +29,24 @@ const IntroWrapperAnimation = keyframes`
   }
 `;
 
-const IntroBackground = styled.div`
+const Wrapper = styled.div`
   position: absolute;
   z-index: 9999;
-  animation: ${IntroBackgroundAnimation} 2.6s both ease-in-out;
+  animation: ${WrapperAnimation} 2.6s both ease-in-out;
   background-color: #ffffff;
 `;
 
-const IntroWrapper = styled.div`
+const Container = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  animation: ${IntroWrapperAnimation} 2.6s both ease-in-out;
+  animation: ${ContainerAnimation} 2.6s both ease-in-out;
 `;
 
-const IntroTitle = styled.div`
+const Title = styled.div`
   font-size: 5.8vw;
 
   @media screen and (max-width: 1024px) {
@@ -54,7 +54,7 @@ const IntroTitle = styled.div`
   }
 `;
 
-const IntroSub = styled.div`
+const SubTitle = styled.div`
   font-size: 2.3vw;
 
   @media screen and (max-width: 1024px) {
@@ -62,7 +62,7 @@ const IntroSub = styled.div`
   }
 `;
 
-const IntroMessage = styled.div`
+const Message = styled.div`
   font-size: 2.8vw;
 
   @media screen and (max-width: 1024px) {
@@ -72,7 +72,7 @@ const IntroMessage = styled.div`
 
 const Intro: React.FC = () => {
   const [intro, setIntro] = useState(false);
-  const introWrapper = useRef<HTMLDivElement>(null);
+  const wrapper = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const syncIntro = async () => {
@@ -89,21 +89,21 @@ const Intro: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    introWrapper.current!.addEventListener('animationend', () => {
+    wrapper.current!.addEventListener('animationend', () => {
       setIntro(true);
     });
-  }, [introWrapper]);
+  }, [wrapper]);
 
   return (
     <>
       {!intro && (
-        <IntroBackground ref={introWrapper}>
-          <IntroWrapper>
-            <IntroTitle>시인</IntroTitle>
-            <IntroSub>See In</IntroSub>
-            <IntroMessage>시인은 사물을 보는 것 - 김영하</IntroMessage>
-          </IntroWrapper>
-        </IntroBackground>
+        <Wrapper ref={wrapper}>
+          <Container>
+            <Title>시인</Title>
+            <SubTitle>See In</SubTitle>
+            <Message>시인은 사물을 보는 것 - 김영하</Message>
+          </Container>
+        </Wrapper>
       )}
     </>
   );

@@ -4,7 +4,6 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 
 import Navigation from './components/Navigation';
-import ScrollBar from './components/ScrollBar';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import SignIn from './pages/SignIn';
@@ -38,14 +37,15 @@ const Container = styled.div`
   section.routeSection {
     position: absolute;
     width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
-    padding-top: 4em;
-    padding-bottom: 1em;
+    padding-top: 4rem;
+    padding-bottom: 1rem;
 
     @media screen and (max-width: 1024px) {
       padding-top: 0;
-      padding-bottom: 2em;
+      padding-bottom: 2rem;
     }
   }
 `;
@@ -70,7 +70,6 @@ const Router: React.FC = () => {
           </section>
         </CSSTransition>
       </TransitionGroup>
-      <ScrollBar />
     </Container>
   );
 };

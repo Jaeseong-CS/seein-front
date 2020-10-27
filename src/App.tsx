@@ -15,20 +15,14 @@ const GlobalStyle = createGlobalStyle`
   html {
     margin: 0;
     padding: 0;
+    background-color: #f5f5f7;
   }
 
   * {
     color: #1a1a1a;
     font-size: 32px;
     font-family: 'Hi Melody';
-    scrollbar-width: none;
-    -ms-overflow-style: none;
     user-select:none;
-
-    &::-webkit-scrollbar {
-      width: 0px;
-      background: transparent;
-    }
   }
 `;
 

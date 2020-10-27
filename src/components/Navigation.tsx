@@ -3,7 +3,7 @@ import Cookies from 'react-cookies';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-const NavigationWrapper = styled.div`
+const Wrapper = styled.div`
   position: fixed;
   display: flex;
   z-index: 999;
@@ -18,14 +18,14 @@ const NavigationWrapper = styled.div`
   }
 `;
 
-const NavigationContainer = styled.ul`
+const Container = styled.ul`
   display: flex;
   list-style-type: none;
   margin: 0;
   padding-left: 0;
   padding-right: 0;
-  padding-top: 0.4em;
-  padding-bottom: 0.4em;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
 
   @media screen and (max-width: 1024px) {
     flex: 3 3 auto;
@@ -34,10 +34,10 @@ const NavigationContainer = styled.ul`
   }
 `;
 
-const NavigationItem = styled.li`
+const Item = styled.li`
   float: left;
-  margin-left: 1.4em;
-  margin-right: 1.4em;
+  margin-left: 1.4rem;
+  margin-right: 1.4rem;
 
   @media screen and (max-width: 1024px) {
     margin: 0;
@@ -46,10 +46,10 @@ const NavigationItem = styled.li`
   }
 `;
 
-const NavigationLink = styled(Link)<{ current: boolean }>`
+const LinkEx = styled(Link)<{ current: boolean }>`
   display: block;
   text-decoration: none;
-  font-size: 1.1em;
+  font-size: 1.1rem;
   font-weight: bold;
   color: ${({ current }) => (current ? '#1a1a1a' : '#8a8a8a')};
   transition: 0.3s ease-out;
@@ -59,16 +59,16 @@ const NavigationLink = styled(Link)<{ current: boolean }>`
   }
 
   @media screen and (max-width: 1024px) {
-    font-size: 0.8em;
-    height: 2.2em;
-    line-height: 2.2em;
+    font-size: 0.8rem;
+    height: 2.2rem;
+    line-height: 2.2rem;
   }
 `;
 
 const Navigation: React.FC = () => {
   const [token, setToken] = useState('');
   const location = useLocation();
-  const navigationWrapper = useRef<HTMLDivElement>(null);
+  const wrapper = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tokenCheck = async () => {
@@ -80,49 +80,51 @@ const Navigation: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
-      const winScroll = document.documentElement.scrollTop;
-      if (winScroll !== 0) {
-        navigationWrapper.current!.style.backgroundColor = '#ffffff';
-        navigationWrapper.current!.style.boxShadow = '0 0 12px 0 #0000005a';
-      } else {
-        navigationWrapper.current!.style.backgroundColor = 'transparent';
-        navigationWrapper.current!.style.boxShadow = 'none';
+      if (Number.parseFloat(getComputedStyle(wrapper.current!).width.split('px')[0]) >= 1024) {
+        const winScroll = document.documentElement.scrollTop;
+        if (winScroll !== 0) {
+          wrapper.current!.style.backgroundColor = '#ffffff';
+          wrapper.current!.style.boxShadow = '0 0 12px 0 #0000005a';
+        } else {
+          wrapper.current!.style.backgroundColor = 'transparent';
+          wrapper.current!.style.boxShadow = 'none';
+        }
       }
     });
   });
 
   return (
-    <NavigationWrapper ref={navigationWrapper}>
-      <NavigationContainer>
-        <NavigationItem>
-          <NavigationLink to="/" current={location.pathname === '/'}>
+    <Wrapper ref={wrapper}>
+      <Container>
+        <Item>
+          <LinkEx to="/" current={location.pathname === '/'}>
             홈
-          </NavigationLink>
-        </NavigationItem>
-        <NavigationItem>
+          </LinkEx>
+        </Item>
+        <Item>
           {token ? (
-            <NavigationLink to="/signout" current={location.pathname === '/signout'}>
+            <LinkEx to="/signout" current={location.pathname === '/signout'}>
               로그아웃
-            </NavigationLink>
+            </LinkEx>
           ) : (
-            <NavigationLink to="/signin" current={location.pathname === '/signin'}>
+            <LinkEx to="/signin" current={location.pathname === '/signin'}>
               로그인
-            </NavigationLink>
+            </LinkEx>
           )}
-        </NavigationItem>
-        <NavigationItem>
+        </Item>
+        <Item>
           {token ? (
-            <NavigationLink to="/write" current={location.pathname === '/write'}>
+            <LinkEx to="/write" current={location.pathname === '/write'}>
               글쓰기
-            </NavigationLink>
+            </LinkEx>
           ) : (
-            <NavigationLink to="/signup" current={location.pathname === '/signup'}>
+            <LinkEx to="/signup" current={location.pathname === '/signup'}>
               회원가입
-            </NavigationLink>
+            </LinkEx>
           )}
-        </NavigationItem>
-      </NavigationContainer>
-    </NavigationWrapper>
+        </Item>
+      </Container>
+    </Wrapper>
   );
 };
 export default Navigation;

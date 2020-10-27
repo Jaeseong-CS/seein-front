@@ -12,7 +12,7 @@ import SignOut from './pages/SignOut';
 import SignUp from './pages/SignUp';
 import Write from './pages/Write';
 
-const Wrapper = styled.div`
+const Container = styled.div`
   .fade-enter {
     opacity: 0;
   }
@@ -54,7 +54,7 @@ const Router: React.FC = () => {
   const location = useLocation();
 
   return (
-    <Wrapper>
+    <Container>
       <Navigation />
       <TransitionGroup className="transitionGroup">
         <CSSTransition key={location.key} timeout={{ enter: 450, exit: 150 }} classNames="fade">
@@ -71,7 +71,7 @@ const Router: React.FC = () => {
         </CSSTransition>
       </TransitionGroup>
       <ScrollBar />
-    </Wrapper>
+    </Container>
   );
 };
 

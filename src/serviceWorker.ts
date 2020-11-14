@@ -10,7 +10,7 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-interface IConfig {
+type Config = {
   onUpdate: (serviceWorkerRegistration: ServiceWorkerRegistration) => void;
   onSuccess: (serviceWorkerRegistration: ServiceWorkerRegistration) => void;
 }
@@ -23,7 +23,7 @@ const isLocalhost = Boolean(
     || window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/),
 );
 
-export const register = (config: IConfig) => {
+export const register = (config: Config) => {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
@@ -57,7 +57,7 @@ export const register = (config: IConfig) => {
   }
 };
 
-const registerValidSW = (swUrl: string, config: IConfig) => {
+const registerValidSW = (swUrl: string, config: Config) => {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
@@ -101,7 +101,7 @@ const registerValidSW = (swUrl: string, config: IConfig) => {
     });
 };
 
-const checkValidServiceWorker = (swUrl: string, config: IConfig) => {
+const checkValidServiceWorker = (swUrl: string, config: Config) => {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl, {
     headers: { 'Service-Worker': 'script' },

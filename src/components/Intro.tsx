@@ -30,16 +30,20 @@ const ContainerAnimation = keyframes`
 `;
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 9999;
   animation: ${WrapperAnimation} 2.6s both ease-in-out;
   background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
 `;
 
 const Container = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
-  width: 100vw;
-  height: 100vh;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -89,9 +93,12 @@ const Intro: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    wrapper.current!.addEventListener('animationend', () => {
+    const setIntroTrue = () => {
       setIntro(true);
-    });
+    };
+
+    wrapper.current!.removeEventListener('animationend', setIntroTrue);
+    wrapper.current!.addEventListener('animationend', setIntroTrue);
   }, [wrapper]);
 
   return (

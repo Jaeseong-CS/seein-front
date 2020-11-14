@@ -4,11 +4,10 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 
 import Navigation from './components/Navigation';
+import Auth from './pages/Auth';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
-import SignIn from './pages/SignIn';
 import SignOut from './pages/SignOut';
-import SignUp from './pages/SignUp';
 import Write from './pages/Write';
 
 const Container = styled.div`
@@ -45,7 +44,6 @@ const Container = styled.div`
 
     @media screen and (max-width: 1024px) {
       padding-top: 0;
-      padding-bottom: 2rem;
     }
   }
 `;
@@ -62,9 +60,8 @@ const Router: React.FC = () => {
             <Switch location={location}>
               <Route exact path="/" component={Home} />
               <Route path="/write" component={Write} />
-              <Route path="/signin" component={SignIn} />
+              <Route path="/auth" component={Auth} />
               <Route path="/signout" component={SignOut} />
-              <Route path="/signup" component={SignUp} />
               <Route component={NotFound} />
             </Switch>
           </section>

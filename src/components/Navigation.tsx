@@ -12,9 +12,10 @@ const Wrapper = styled.div`
   transition: 0.3s ease-out;
 
   @media screen and (max-width: 1024px) {
+    position: fixed;
     bottom: 0;
-    background-color: #eadaff;
-    box-shadow: none;
+    background-color: #ffffff;
+    box-shadow: 0 0 12px 0 #0000005a;
   }
 `;
 
@@ -79,18 +80,31 @@ const Navigation: React.FC = () => {
   }, [token]);
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if (Number.parseFloat(getComputedStyle(wrapper.current!).width.split('px')[0]) >= 1024) {
-        const winScroll = document.documentElement.scrollTop;
-        if (winScroll !== 0) {
+    const navigationStyle = () => {
+      try {
+        if (Number.parseFloat(getComputedStyle(wrapper.current!).width.split('px')[0]) >= 1024) {
+          const winScroll = document.documentElement.scrollTop;
+          if (winScroll !== 0) {
+            wrapper.current!.style.backgroundColor = '#ffffff';
+            wrapper.current!.style.boxShadow = '0 0 12px 0 #0000005a';
+          } else {
+            wrapper.current!.style.backgroundColor = 'transparent';
+            wrapper.current!.style.boxShadow = 'none';
+          }
+        } else {
           wrapper.current!.style.backgroundColor = '#ffffff';
           wrapper.current!.style.boxShadow = '0 0 12px 0 #0000005a';
-        } else {
-          wrapper.current!.style.backgroundColor = 'transparent';
-          wrapper.current!.style.boxShadow = 'none';
         }
+      } catch {
+        wrapper.current!.style.backgroundColor = '#ffffff';
+        wrapper.current!.style.boxShadow = '0 0 12px 0 #0000005a';
       }
-    });
+    };
+
+    window.removeEventListener('scroll', navigationStyle);
+    window.removeEventListener('resize', navigationStyle);
+    window.addEventListener('scroll', navigationStyle);
+    window.addEventListener('resize', navigationStyle);
   });
 
   return (
@@ -98,7 +112,12 @@ const Navigation: React.FC = () => {
       <Container>
         <Item>
           <LinkEx to="/" current={location.pathname === '/'}>
-            홈
+            시집
+          </LinkEx>
+        </Item>
+        <Item>
+          <LinkEx to="/write" current={location.pathname === '/write'}>
+            작성
           </LinkEx>
         </Item>
         <Item>
@@ -107,19 +126,8 @@ const Navigation: React.FC = () => {
               로그아웃
             </LinkEx>
           ) : (
-            <LinkEx to="/signin" current={location.pathname === '/signin'}>
-              로그인
-            </LinkEx>
-          )}
-        </Item>
-        <Item>
-          {token ? (
-            <LinkEx to="/write" current={location.pathname === '/write'}>
-              글쓰기
-            </LinkEx>
-          ) : (
-            <LinkEx to="/signup" current={location.pathname === '/signup'}>
-              회원가입
+            <LinkEx to="/auth" current={location.pathname === '/auth'}>
+              계정
             </LinkEx>
           )}
         </Item>

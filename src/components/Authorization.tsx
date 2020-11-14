@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'react-cookies';
 import { useHistory } from 'react-router-dom';
 
-interface IAuthorizationProps {
+type AuthorizationProps = {
   children: React.ReactNode;
 }
 
-const Authorization: React.FC<IAuthorizationProps> = ({ children }: IAuthorizationProps) => {
+const Authorization: React.FC<AuthorizationProps> = ({ children }: AuthorizationProps) => {
   const [verify, setVerify] = useState(false);
   const history = useHistory();
 
@@ -16,7 +16,7 @@ const Authorization: React.FC<IAuthorizationProps> = ({ children }: IAuthorizati
     const tokenVerify = async () => {
       try {
         const accessToken = await Cookies.load('accessToken');
-        const response = await axios.post(`${process.env.BASE_URL}/api/v1/auth/verify`, undefined, {
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/v1/auth/verify`, undefined, {
           headers: {
             Authorization: accessToken,
           },
@@ -31,7 +31,7 @@ const Authorization: React.FC<IAuthorizationProps> = ({ children }: IAuthorizati
       try {
         const refreshToken = await Cookies.load('refreshToken');
         const response = await axios.post(
-          `${process.env.BASE_URL}/api/v1/auth/refresh`,
+          `${process.env.REACT_APP_BASE_URL}/api/v1/auth/refresh`,
           undefined,
           {
             headers: {
@@ -41,8 +41,8 @@ const Authorization: React.FC<IAuthorizationProps> = ({ children }: IAuthorizati
         );
         if (response.status === StatusCodes.OK) {
           const accessExpires = new Date();
-          accessExpires.setTime(Date.now() + 1000 * 60 * 60 * 7);
           const refreshExpires = new Date();
+          accessExpires.setTime(Date.now() + 1000 * 60 * 60 * 7);
           refreshExpires.setTime(Date.now() + 1000 * 60 * 60 * 24 * 7);
           Cookies.save('accessToken', response.data.accessToken, { expires: accessExpires });
           Cookies.save('refreshToken', response.data.refreshToken, { expires: refreshExpires });
@@ -60,7 +60,7 @@ const Authorization: React.FC<IAuthorizationProps> = ({ children }: IAuthorizati
         const refreshed = await tokenRefresh();
         if (!refreshed) {
           setVerify(false);
-          history.push('/signin');
+          history.push('/auth');
           return;
         }
       }

@@ -1,21 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export interface ICardProps {
+export type CardProps = {
   title: string;
   writer: string;
   content: string;
-  dateCreated: Date;
-}
+  createdAt: string;
+};
 
 const Container = styled.div`
   display: flex;
   flex-flow: column;
   width: 13rem;
-  // border: 1px solid #ededf0;
+  border: 1px solid #ededf0;
   box-shadow: 12px 12px 12px #0000000a;
   background-color: #ffffff;
-  margin: 1em 0.4em;
+  margin: 1rem 0.4rem;
+
+  @media screen and (max-width: 1024px) {
+    margin: 1rem 0 0.4rem 0;
+  }
 `;
 
 const Title = styled.div`
@@ -34,19 +38,19 @@ const Content = styled.div`
   font-size: 0.625rem;
 `;
 
-const DateCreated = styled.div`
+const CreatedAt = styled.div`
   margin: 1.3rem auto;
   font-size: 0.55rem;
 `;
 
-const Card: React.FC<ICardProps> = ({
-  title, writer, content, dateCreated,
-}: ICardProps) => (
+const Card: React.FC<CardProps> = ({
+  title, writer, content, createdAt,
+}: CardProps) => (
   <Container>
     <Title>{title}</Title>
     <Writer>{writer}</Writer>
     <Content>{content}</Content>
-    <DateCreated>{dateCreated.toDateString()}</DateCreated>
+    <CreatedAt>{new Date(createdAt).toDateString()}</CreatedAt>
   </Container>
 );
 

@@ -1,7 +1,9 @@
+import { Button } from '@material-ui/core';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Wrapper = styled.span`
+const Container = styled.span`
   position: fixed;
   display: flex;
   top: 0;
@@ -10,8 +12,22 @@ const Wrapper = styled.span`
   font-size: 20vw;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 `;
 
-const NotFound: React.FC = () => <Wrapper>404</Wrapper>;
+const NotFound: React.FC = () => {
+  const history = useHistory();
+
+  const home = () => {
+    history.push('/');
+  };
+
+  return (
+    <Container>
+      404
+      <Button onClick={home}>홈</Button>
+    </Container>
+  );
+};
 
 export default NotFound;

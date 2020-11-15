@@ -18,7 +18,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ children }: Authorization
         const accessToken = await Cookies.load('accessToken');
         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/v1/auth/verify`, undefined, {
           headers: {
-            Authorization: accessToken,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
         return response.status === StatusCodes.OK;
@@ -35,7 +35,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ children }: Authorization
           undefined,
           {
             headers: {
-              Authorization: refreshToken,
+              Authorization: `Bearer ${refreshToken}`,
             },
           },
         );

@@ -25,7 +25,7 @@ const NotFound: React.FC = () => {
   return (
     <Container>
       404
-      <Button onClick={home}>홈</Button>
+      <Button variant="contained" disableElevation onClick={home}>홈</Button>
     </Container>
   );
 };

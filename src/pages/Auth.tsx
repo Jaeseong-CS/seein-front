@@ -153,20 +153,10 @@ const Auth: React.FC = () => {
       </Dialog>
       <Panel>
         <TextBoxWrapper>
-          <TextBoxEx
-            type="email"
-            label="이메일"
-            inputRef={inEmail}
-            onKeyPress={inSubmit}
-          />
+          <TextBoxEx type="email" label="이메일" inputRef={inEmail} onKeyPress={inSubmit} />
         </TextBoxWrapper>
         <TextBoxWrapper>
-          <TextBoxEx
-            type="password"
-            label="비밀번호"
-            inputRef={inPassword}
-            onKeyPress={inSubmit}
-          />
+          <TextBoxEx type="password" label="비밀번호" inputRef={inPassword} onKeyPress={inSubmit} />
         </TextBoxWrapper>
         <Button variant="contained" disableElevation onClick={signIn} ref={inButton}>
           로그인
@@ -174,28 +164,13 @@ const Auth: React.FC = () => {
       </Panel>
       <Panel>
         <TextBoxWrapper>
-          <TextBoxEx
-            type="text"
-            label="닉네임"
-            inputRef={upName}
-            onKeyPress={upSubmit}
-          />
+          <TextBoxEx type="text" label="닉네임" inputRef={upName} onKeyPress={upSubmit} />
         </TextBoxWrapper>
         <TextBoxWrapper>
-          <TextBoxEx
-            type="email"
-            label="이메일"
-            inputRef={upEmail}
-            onKeyPress={upSubmit}
-          />
+          <TextBoxEx type="email" label="이메일" inputRef={upEmail} onKeyPress={upSubmit} />
         </TextBoxWrapper>
         <TextBoxWrapper>
-          <TextBoxEx
-            type="password"
-            label="비밀번호"
-            inputRef={upPassword}
-            onKeyPress={upSubmit}
-          />
+          <TextBoxEx type="password" label="비밀번호" inputRef={upPassword} onKeyPress={upSubmit} />
         </TextBoxWrapper>
         <TextBoxWrapper>
           <TextBoxEx

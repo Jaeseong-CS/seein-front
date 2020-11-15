@@ -81,8 +81,8 @@ const Navigation: React.FC = () => {
 
   useEffect(() => {
     const navigationStyle = () => {
-      try {
-        if (Number.parseFloat(getComputedStyle(wrapper.current!).width.split('px')[0]) >= 1024) {
+      if (wrapper.current) {
+        if (Number.parseFloat(getComputedStyle(wrapper.current).width.split('px')[0]) >= 1024) {
           const winScroll = document.documentElement.scrollTop;
           if (winScroll !== 0) {
             wrapper.current!.style.backgroundColor = '#ffffff';
@@ -95,7 +95,7 @@ const Navigation: React.FC = () => {
           wrapper.current!.style.backgroundColor = '#ffffff';
           wrapper.current!.style.boxShadow = '0 0 12px 0 #0000005a';
         }
-      } catch {
+      } else {
         wrapper.current!.style.backgroundColor = '#ffffff';
         wrapper.current!.style.boxShadow = '0 0 12px 0 #0000005a';
       }

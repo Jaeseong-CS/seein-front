@@ -35,13 +35,13 @@ const Home: React.FC = () => {
   const [columnList, setColumnList] = useState<CardProps[][]>([]);
 
   const addPoem = async () => {
-    try {
+    if (container.current) {
       const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/v1/card/${page.current}`);
       if (res.status === StatusCodes.OK) {
         if (page.current > res.data.pagination.totalPages) {
           return;
         }
-        const width = Number.parseFloat(getComputedStyle(container.current!).width.split('px')[0]);
+        const width = Number.parseFloat(getComputedStyle(container.current).width.split('px')[0]);
         if (width <= 887) {
           poemList.current = [
             poemList.current.length > 0 ? poemList.current[0].concat(res.data.data) : res.data.data,
@@ -73,7 +73,7 @@ const Home: React.FC = () => {
         setColumnList(poemList.current);
       }
       page.current += 1;
-    } catch (err) {
+    } else {
       setColumnList([]);
     }
   };
@@ -91,8 +91,8 @@ const Home: React.FC = () => {
   }, []);
 
   const resizePoem = () => {
-    try {
-      const width = Number.parseFloat(getComputedStyle(container.current!).width.split('px')[0]);
+    if (container.current) {
+      const width = Number.parseFloat(getComputedStyle(container.current).width.split('px')[0]);
       if (width <= 887) {
         switch (count.current) {
           case 2:
@@ -153,7 +153,6 @@ const Home: React.FC = () => {
         }
         count.current = 3;
       }
-    } finally {
       setColumnList(poemList.current);
     }
   };

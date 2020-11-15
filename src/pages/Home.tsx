@@ -11,7 +11,8 @@ const Container = styled.div`
   display: flex;
   margin: 0 auto;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
+  max-width: 1440px;
 
   @media screen and (max-width: 1024px) {
     margin-bottom: 2.5rem;
@@ -23,7 +24,6 @@ const Column = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   align-items: flex-start;
-  max-width: 1520px;
 `;
 
 const Home: React.FC = () => {
@@ -91,69 +91,71 @@ const Home: React.FC = () => {
   }, []);
 
   const resizePoem = () => {
-    const width = Number.parseFloat(getComputedStyle(container.current!).width.split('px')[0]);
-    if (width <= 887) {
-      switch (count.current) {
-        case 2:
-          poemList.current[0].splice(1, 0, ...poemList.current[1]);
-          poemList.current = [poemList.current[0]];
-          break;
-        case 3:
-          poemList.current[1].splice(0, 0, ...poemList.current[2]);
-          poemList.current[0].splice(1, 0, ...poemList.current[1]);
-          poemList.current = [poemList.current[0]];
-          break;
-        default:
-          break;
+    try {
+      const width = Number.parseFloat(getComputedStyle(container.current!).width.split('px')[0]);
+      if (width <= 887) {
+        switch (count.current) {
+          case 2:
+            poemList.current[0].splice(1, 0, ...poemList.current[1]);
+            poemList.current = [poemList.current[0]];
+            break;
+          case 3:
+            poemList.current[0].splice(1, 0, ...poemList.current[1], ...poemList.current[2]);
+            poemList.current = [poemList.current[0]];
+            break;
+          default:
+            break;
+        }
+        count.current = 1;
+      } else if (width <= 1330) {
+        switch (count.current) {
+          case 1:
+            {
+              const length = poemList.current[0].length / 2;
+              const temp = poemList.current[0].splice(1, length);
+              poemList.current = [poemList.current[0], temp];
+            }
+            break;
+          case 3:
+            {
+              const length = poemList.current[2].length / 2;
+              const temp1 = poemList.current[2].slice(0, length);
+              const temp2 = poemList.current[2].slice(length);
+              poemList.current[0].splice(1, 0, ...temp1);
+              poemList.current[1].splice(1, 0, ...temp2);
+              poemList.current = [poemList.current[0], poemList.current[1]];
+            }
+            break;
+          default:
+            break;
+        }
+        count.current = 2;
+      } else {
+        switch (count.current) {
+          case 1:
+            {
+              const length = poemList.current[0].length / 3;
+              const temp1 = poemList.current[0].splice(1, length);
+              const temp2 = poemList.current[0].splice(1, length);
+              poemList.current = [poemList.current[0], temp1, temp2];
+            }
+            break;
+          case 2:
+            {
+              const length = (poemList.current[0].length + poemList.current[1].length) / 6;
+              const temp1 = poemList.current[0].splice(1, length);
+              const temp2 = poemList.current[1].splice(1, length);
+              poemList.current = [poemList.current[0], poemList.current[1], temp1.concat(temp2)];
+            }
+            break;
+          default:
+            break;
+        }
+        count.current = 3;
       }
-      count.current = 1;
-    } else if (width <= 1330) {
-      switch (count.current) {
-        case 1:
-          {
-            const length = poemList.current[0].length / 2;
-            const temp = poemList.current[0].splice(1, length);
-            poemList.current = [poemList.current[0], temp];
-          }
-          break;
-        case 3:
-          {
-            const length = poemList.current[2].length / 2;
-            const temp = poemList.current[2].splice(0, length);
-            poemList.current[0].splice(1, 0, ...temp);
-            poemList.current[1].splice(1, 0, ...poemList.current[2]);
-            poemList.current = [poemList.current[0], poemList.current[1]];
-          }
-          break;
-        default:
-          break;
-      }
-      count.current = 2;
-    } else {
-      switch (count.current) {
-        case 1:
-          {
-            const length1 = poemList.current[0].length / 3 - 1;
-            const temp1 = poemList.current[0].splice(1, length1);
-            const length2 = temp1.length / 2;
-            const temp2 = temp1.splice(0, length2);
-            poemList.current = [poemList.current[0], temp2, temp1];
-          }
-          break;
-        case 2:
-          {
-            const length = (poemList.current[0].length + poemList.current[1].length) / 6;
-            const temp1 = poemList.current[0].splice(1, length);
-            const temp2 = poemList.current[1].splice(1, length);
-            poemList.current = [poemList.current[0], poemList.current[1], temp1.concat(temp2)];
-          }
-          break;
-        default:
-          break;
-      }
-      count.current = 3;
+    } finally {
+      setColumnList(poemList.current);
     }
-    setColumnList(poemList.current);
   };
 
   useEffect(() => {

@@ -157,7 +157,7 @@ const Auth: React.FC = () => {
             type="email"
             label="이메일"
             inputRef={inEmail}
-            inputProps={{ onKeyPress: inSubmit }}
+            onKeyPress={inSubmit}
           />
         </TextBoxWrapper>
         <TextBoxWrapper>
@@ -165,7 +165,7 @@ const Auth: React.FC = () => {
             type="password"
             label="비밀번호"
             inputRef={inPassword}
-            inputProps={{ onKeyPress: inSubmit }}
+            onKeyPress={inSubmit}
           />
         </TextBoxWrapper>
         <Button variant="contained" disableElevation onClick={signIn} ref={inButton}>
@@ -178,7 +178,7 @@ const Auth: React.FC = () => {
             type="text"
             label="닉네임"
             inputRef={upName}
-            inputProps={{ onKeyPress: upSubmit }}
+            onKeyPress={upSubmit}
           />
         </TextBoxWrapper>
         <TextBoxWrapper>
@@ -186,7 +186,7 @@ const Auth: React.FC = () => {
             type="email"
             label="이메일"
             inputRef={upEmail}
-            inputProps={{ onKeyPress: upSubmit }}
+            onKeyPress={upSubmit}
           />
         </TextBoxWrapper>
         <TextBoxWrapper>
@@ -194,7 +194,7 @@ const Auth: React.FC = () => {
             type="password"
             label="비밀번호"
             inputRef={upPassword}
-            inputProps={{ onKeyPress: upSubmit }}
+            onKeyPress={upSubmit}
           />
         </TextBoxWrapper>
         <TextBoxWrapper>
@@ -202,7 +202,7 @@ const Auth: React.FC = () => {
             type="password"
             label="비밀번호 확인"
             inputRef={upPasswordVerify}
-            inputProps={{ onKeyPress: upSubmit }}
+            onKeyPress={upSubmit}
           />
         </TextBoxWrapper>
         <Button variant="contained" disableElevation onClick={signUp} ref={upButton}>

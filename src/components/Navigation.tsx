@@ -67,7 +67,7 @@ const LinkEx = styled(Link)<{ current: boolean }>`
 `;
 
 const Navigation: React.FC = () => {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState(undefined);
   const location = useLocation();
   const wrapper = useRef<HTMLDivElement>(null);
 
@@ -77,7 +77,7 @@ const Navigation: React.FC = () => {
     };
 
     tokenCheck();
-  }, [token]);
+  });
 
   useEffect(() => {
     const navigationStyle = () => {

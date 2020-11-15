@@ -5,6 +5,7 @@ import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import React, { useRef, useState } from 'react';
 import Cookies from 'react-cookies';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import DialogText from '../components/DialogText';
@@ -50,6 +51,7 @@ const Auth: React.FC = () => {
   const upPassword = useRef<HTMLInputElement>(null);
   const upPasswordVerify = useRef<HTMLInputElement>(null);
   const upButton = useRef<HTMLButtonElement>(null);
+  const history = useHistory();
 
   const signIn = async () => {
     try {
@@ -67,6 +69,7 @@ const Auth: React.FC = () => {
         refreshExpires.setTime(Date.now() + 1000 * 60 * 60 * 24 * 7);
         Cookies.save('accessToken', token.accessToken, { expires: accessExpires });
         Cookies.save('refreshToken', token.refreshToken, { expires: refreshExpires });
+        history.push('/');
       }
     } catch (err) {
       switch (err.response.status) {

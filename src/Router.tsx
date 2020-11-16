@@ -4,7 +4,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 
 import Navigation from './components/Navigation';
-import Auth from './pages/Auth';
+import Account from './pages/Account';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import SignOut from './pages/SignOut';
@@ -60,7 +60,7 @@ const Router: React.FC = () => {
             <Switch location={location}>
               <Route exact path="/" component={Home} />
               <Route path="/write" component={Write} />
-              <Route path="/auth" component={Auth} />
+              <Route path="/account" component={Account} />
               <Route path="/signout" component={SignOut} />
               <Route component={NotFound} />
             </Switch>

@@ -126,7 +126,7 @@ const Navigation: React.FC = () => {
               로그아웃
             </LinkEx>
           ) : (
-            <LinkEx to="/auth" current={location.pathname === '/auth'}>
+            <LinkEx to="/account" current={location.pathname === '/account'}>
               계정
             </LinkEx>
           )}

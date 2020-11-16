@@ -23,6 +23,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
+    margin-top: 3rem;
   }
 `;
 
@@ -34,6 +35,10 @@ const Panel = styled.div`
   width: 30%;
   flex-direction: column;
   transition: 0.4s ease-in-out;
+
+  @media screen and (max-width: 1024px) {
+    width: 80%;
+  }
 `;
 
 const InPanel = styled(Panel)`
@@ -45,6 +50,10 @@ const InPanel = styled(Panel)`
 const UpPanel = styled(Panel)`
   display: flex;
   margin-right: 10%;
+
+  @media screen and (max-width: 1024px) {
+    margin-top: -0.3rem;
+  }
 `;
 
 const LeftToRight = keyframes`
@@ -99,11 +108,16 @@ const Overlay = styled.div<{ animation: any }>`
   justify-content: center;
   align-items: center;
   border-radius: 16px;
+  transform: scale(1.1);
   ${({ animation }) => animation};
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const OverlayItemContainer = styled.div`
-  width: 80%;
+  width: 85%;
   transition: opacity 0.2s ease-in-out;
 `;
 
@@ -118,7 +132,7 @@ const OverlayContent = styled.div`
   margin: 2rem auto;
   text-align: center;
   white-space: pre-wrap;
-  font-size: 2vw;;
+  font-size: 2vw;
   color: #5b3f40;
 `;
 
@@ -133,7 +147,7 @@ const OverlayButton = styled(Button)`
 
 const TextBoxEx = styled(TextBox)`
   width: 100%;
-  margin-top: 0.4rem !important;
+  margin-bottom: 0.4rem !important;
 `;
 
 const ButtonEx = styled(Button)`
@@ -142,6 +156,18 @@ const ButtonEx = styled(Button)`
 
   .MuiButton-label {
     color: #5b3f40 !important;
+  }
+
+  @media screen and (max-width: 1024px) {
+    margin-bottom: 1rem !important;
+  }
+`;
+
+const PanelButton = styled(Button)`
+  display: none !important;
+
+  @media screen and (max-width: 1024px) {
+    display: block !important;
   }
 `;
 
@@ -247,6 +273,7 @@ const Auth: React.FC = () => {
   };
 
   const changePanel = () => {
+    const widthCheck = Number.parseFloat(getComputedStyle(document.body).width.split('px')[0]) > 1024;
     if (isLeft.current) {
       setAnimation(
         css`
@@ -255,21 +282,29 @@ const Auth: React.FC = () => {
       );
       overlayItemContainer.current!.style.opacity = '0';
       inPanel.current!.style.opacity = '0';
-      upPanel.current!.style.marginRight = '30%';
-      setTimeout(() => {
-        upPanel.current!.style.display = 'none';
-        inPanel.current!.style.display = 'flex';
-        inPanel.current!.style.marginLeft = '10%';
-      }, 500);
-      setTimeout(() => {
-        inPanel.current!.style.opacity = '1';
-      }, 550);
-      setTimeout(() => {
-        setOverlayTitle(upOverlayTitle);
-        setOverlayContent(upOverlayContent);
-        setOverlayButton(upOverlayButton);
-        overlayItemContainer.current!.style.opacity = '1';
-      }, 900);
+      if (widthCheck) {
+        upPanel.current!.style.marginRight = '30%';
+        setTimeout(() => {
+          setOverlayTitle(upOverlayTitle);
+          setOverlayContent(upOverlayContent);
+          setOverlayButton(upOverlayButton);
+          overlayItemContainer.current!.style.opacity = '1';
+        }, 900);
+      }
+      setTimeout(
+        () => {
+          upPanel.current!.style.display = 'none';
+          inPanel.current!.style.display = 'flex';
+          inPanel.current!.style.marginLeft = '10%';
+        },
+        widthCheck ? 500 : 200,
+      );
+      setTimeout(
+        () => {
+          inPanel.current!.style.opacity = '1';
+        },
+        widthCheck ? 550 : 250,
+      );
     } else {
       setAnimation(
         css`
@@ -278,21 +313,29 @@ const Auth: React.FC = () => {
       );
       overlayItemContainer.current!.style.opacity = '0';
       upPanel.current!.style.opacity = '0';
-      inPanel.current!.style.marginLeft = '30%';
-      setTimeout(() => {
-        inPanel.current!.style.display = 'none';
-        upPanel.current!.style.display = 'flex';
-        upPanel.current!.style.marginRight = '10%';
-      }, 500);
-      setTimeout(() => {
-        upPanel.current!.style.opacity = '1';
-      }, 550);
-      setTimeout(() => {
-        setOverlayTitle(inOverlayTitle);
-        setOverlayContent(inOverlayContent);
-        setOverlayButton(inOverlayButton);
-        overlayItemContainer.current!.style.opacity = '1';
-      }, 900);
+      if (widthCheck) {
+        inPanel.current!.style.marginRight = '30%';
+        setTimeout(() => {
+          setOverlayTitle(inOverlayTitle);
+          setOverlayContent(inOverlayContent);
+          setOverlayButton(inOverlayButton);
+          overlayItemContainer.current!.style.opacity = '1';
+        }, 900);
+      }
+      setTimeout(
+        () => {
+          inPanel.current!.style.display = 'none';
+          upPanel.current!.style.display = 'flex';
+          upPanel.current!.style.marginRight = '10%';
+        },
+        widthCheck ? 500 : 200,
+      );
+      setTimeout(
+        () => {
+          upPanel.current!.style.opacity = '1';
+        },
+        widthCheck ? 550 : 250,
+      );
     }
     isLeft.current = !isLeft.current;
   };
@@ -370,6 +413,9 @@ const Auth: React.FC = () => {
         <ButtonEx variant="outlined" disableElevation onClick={signIn} ref={inButton}>
           로그인
         </ButtonEx>
+        <PanelButton disableElevation onClick={changePanel}>
+          회원가입
+        </PanelButton>
       </InPanel>
       <UpPanel ref={upPanel}>
         <TextBoxEx type="text" label="닉네임" inputRef={upName} onKeyPress={upSubmit} />
@@ -384,6 +430,9 @@ const Auth: React.FC = () => {
         <ButtonEx variant="outlined" disableElevation onClick={signUp} ref={upButton}>
           회원가입
         </ButtonEx>
+        <PanelButton disableElevation onClick={changePanel}>
+          로그인
+        </PanelButton>
       </UpPanel>
     </Container>
   );

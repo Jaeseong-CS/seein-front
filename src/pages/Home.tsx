@@ -28,10 +28,10 @@ const Column = styled.div`
 
 const Home: React.FC = () => {
   const container = useRef<HTMLDivElement>(null);
-  const page = useRef<number>(1);
-  const scrollCheck = useRef<boolean>(false);
+  const page = useRef(1);
+  const scrollCheck = useRef(false);
   const poemList = useRef<CardProps[][]>([]);
-  const count = useRef<number>(0);
+  const count = useRef(0);
   const [columnList, setColumnList] = useState<CardProps[][]>([]);
 
   const addPoem = async () => {

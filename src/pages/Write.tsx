@@ -52,7 +52,7 @@ const ButtonEx = styled(Button)`
 const Write: React.FC = () => {
   const poemTitle = useRef<HTMLInputElement>(null);
   const poemContent = useRef<HTMLTextAreaElement>(null);
-  const goToHome = useRef<boolean>(false);
+  const goToHome = useRef(false);
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogContentText, setDialogContentText] = useState('');
   const [open, setOpen] = useState(false);
@@ -63,7 +63,10 @@ const Write: React.FC = () => {
       const token = await Cookies.load('accessToken');
       const res = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/v1/card`,
-        { title: poemTitle.current!.value, content: poemContent.current!.value },
+        {
+          title: poemTitle.current!.value,
+          content: poemContent.current!.value,
+        },
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -73,6 +76,10 @@ const Write: React.FC = () => {
         handleOpen('저장 완료', '성공적으로 시를 저장했습니다.');
       }
     } catch (err) {
+      if (!err.response.status) {
+        handleOpen('알 수 없는 오류', err.toString());
+        return;
+      }
       switch (err.response.status) {
         case StatusCodes.BAD_REQUEST:
           handleOpen('저장 실패', err.response.data);
@@ -115,7 +122,7 @@ const Write: React.FC = () => {
           <Title type="text" ref={poemTitle} placeholder="제목" />
           <Content role="textbox" ref={poemContent} placeholder="내용" />
         </Card>
-        <ButtonEx variant="contained" disableElevation onClick={write}>
+        <ButtonEx variant="outlined" disableElevation onClick={write}>
           저장
         </ButtonEx>
       </Container>

@@ -16,9 +16,11 @@ const Container = styled.div`
   box-shadow: 12px 12px 12px #0000000a;
   background-color: #ffffff;
   margin: 1rem 0.4rem;
+  border-radius: 8px;
 
   @media screen and (max-width: 1024px) {
     margin: 1rem 0 0.4rem 0;
+    border-radius: 0;
   }
 `;
 

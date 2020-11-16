@@ -1,4 +1,5 @@
 import React from 'react';
+import ScrollAnimation from 'react-animate-on-scroll';
 import styled from 'styled-components';
 
 export type CardProps = {
@@ -48,12 +49,14 @@ const CreatedAt = styled.div`
 const Card: React.FC<CardProps> = ({
   title, writer, content, createdAt,
 }: CardProps) => (
-  <Container>
-    <Title>{title}</Title>
-    <Writer>{writer}</Writer>
-    <Content>{content}</Content>
-    <CreatedAt>{new Date(createdAt).toDateString()}</CreatedAt>
-  </Container>
+  <ScrollAnimation duration={0.5} animateIn="fadeInUp" animateOut="zoomOut">
+    <Container>
+      <Title>{title}</Title>
+      <Writer>{writer}</Writer>
+      <Content>{content}</Content>
+      <CreatedAt>{new Date(createdAt).toDateString()}</CreatedAt>
+    </Container>
+  </ScrollAnimation>
 );
 
 export default Card;

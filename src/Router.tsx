@@ -28,23 +28,23 @@ const Container = styled.div`
     opacity: 0;
     transition: opacity 150ms ease-out;
   }
+`;
 
-  div.transitionGroup {
-    position: relative;
-  }
+const TransitionGroupEx = styled(TransitionGroup)`
+  position: relative;
+`;
 
-  section.routeSection {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    padding-top: 4rem;
-    padding-bottom: 1rem;
+const Section = styled.section`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding-top: 4rem;
+  padding-bottom: 1rem;
 
-    @media screen and (max-width: 1024px) {
-      padding-top: 0;
-    }
+  @media screen and (max-width: 1024px) {
+    padding-top: 0;
   }
 `;
 
@@ -54,9 +54,9 @@ const Router: React.FC = () => {
   return (
     <Container>
       <Navigation />
-      <TransitionGroup className="transitionGroup">
+      <TransitionGroupEx>
         <CSSTransition key={location.key} timeout={{ enter: 450, exit: 150 }} classNames="fade">
-          <section className="routeSection">
+          <Section>
             <Switch location={location}>
               <Route exact path="/" component={Home} />
               <Route path="/write" component={Write} />
@@ -64,9 +64,9 @@ const Router: React.FC = () => {
               <Route path="/signout" component={SignOut} />
               <Route component={NotFound} />
             </Switch>
-          </section>
+          </Section>
         </CSSTransition>
-      </TransitionGroup>
+      </TransitionGroupEx>
     </Container>
   );
 };

@@ -21,11 +21,13 @@ const TextBox: React.FC<TextFieldProps> = (props: TextFieldProps) => {
         style: {
           fontFamily: 'Hi Melody',
           color: '#5b3f40',
+          fontSize: '1rem',
         },
       }}
       InputLabelProps={{
         style: {
           fontFamily: 'Hi Melody',
+          fontSize: '1rem',
         },
       }}
       {...other}

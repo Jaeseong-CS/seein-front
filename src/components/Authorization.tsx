@@ -60,7 +60,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ children }: Authorization
         const refreshed = await tokenRefresh();
         if (!refreshed) {
           setVerify(false);
-          history.push('/auth');
+          history.push('/account');
           return;
         }
       }

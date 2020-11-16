@@ -12,10 +12,10 @@ const Wrapper = styled.div`
   transition: 0.3s ease-out;
 
   @media screen and (max-width: 1024px) {
-    position: fixed;
     bottom: 0;
     background-color: #ffffff;
     box-shadow: 0 0 12px 0 #0000005a;
+    width: 100%;
   }
 `;
 
@@ -42,7 +42,7 @@ const Item = styled.li`
 
   @media screen and (max-width: 1024px) {
     margin: 0;
-    flex: 3 3 calc(100vh / 3);
+    flex: 3 3 calc(100% / 3);
     text-align: center;
   }
 `;
@@ -52,11 +52,11 @@ const LinkEx = styled(Link)<{ current: boolean }>`
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: bold;
-  color: ${({ current }) => (current ? '#1a1a1a' : '#8a8a8a')};
+  color: ${({ current }) => (current ? '#5b3f40' : '#aaaaaa')};
   transition: 0.3s ease-out;
 
   &:hover {
-    color: #1a1a1a;
+    color: #5b3f40;
   }
 
   @media screen and (max-width: 1024px) {

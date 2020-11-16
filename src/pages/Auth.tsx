@@ -88,7 +88,7 @@ const RightToLeft = keyframes`
 const Overlay = styled.div<{ animation: any }>`
   display: flex;
   position: absolute;
-  left: 0;
+  left: 10%;
   right: auto;
   margin: auto 0;
   width: 40%;

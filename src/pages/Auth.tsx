@@ -3,10 +3,10 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Cookies from 'react-cookies';
 import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import DialogText from '../components/DialogText';
 import DialogTitle from '../components/DialogTitle';
@@ -16,8 +16,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0 auto;
-  width: 90%;
-  height: 60vh;
+  width: 80%;
+  height: 70vh;
+  background-color: #ffffff;
+  border-radius: 16px;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
@@ -25,32 +27,150 @@ const Container = styled.div`
 `;
 
 const Panel = styled.div`
-  display: flex;
   margin: auto;
-  width: 13rem;
+  display: flex;
+  position: relative;
+  top: 1.5rem;
+  width: 30%;
   flex-direction: column;
+  transition: 0.4s ease-in-out;
+`;
+
+const InPanel = styled(Panel)`
+  display: none;
+  opacity: 0;
+  margin-left: 10%;
+`;
+
+const UpPanel = styled(Panel)`
+  display: flex;
+  margin-right: 10%;
+`;
+
+const LeftToRight = keyframes`
+  0% {
+    left: 10%;
+    right: auto;
+    width: 40%;
+  }
+  30% {
+    width: 52%;
+  }
+  40% {
+    width: 52%;
+  }
+  100% {
+    left: 50%;
+    right: auto;
+    width: 40%;
+  }
+`;
+
+const RightToLeft = keyframes`
+  0% {
+    left: auto;
+    right: 10%;
+    width: 40%;
+  }
+  30% {
+    width: 52%;
+  }
+  40% {
+    width: 52%;
+  }
+  100% {
+    left: auto;
+    right: 50%;
+    width: 40%;
+  }
+`;
+
+const Overlay = styled.div<{ animation: any }>`
+  display: flex;
+  position: absolute;
+  left: 0;
+  right: auto;
+  margin: auto 0;
+  width: 40%;
+  height: 70vh;
+  z-index: 99;
+  background-color: #ffc7c7;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  ${({ animation }) => animation};
+`;
+
+const OverlayItemContainer = styled.div`
+  width: 80%;
+  transition: opacity 0.2s ease-in-out;
+`;
+
+const OverlayTitle = styled.div`
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #5b3f40;
+`;
+
+const OverlayContent = styled.div`
+  margin: 2rem auto;
+  text-align: center;
+  white-space: pre-wrap;
+  font-size: 2vw;;
+  color: #5b3f40;
+`;
+
+const OverlayButton = styled(Button)`
+  margin-top: 1.5rem !important;
+  width: 100%;
+
+  .MuiButton-label {
+    color: #5b3f40 !important;
+  }
 `;
 
 const TextBoxEx = styled(TextBox)`
   width: 100%;
+  margin-top: 0.4rem !important;
 `;
 
-const TextBoxWrapper = styled.div`
-  margin-bottom: 0.4rem;
+const ButtonEx = styled(Button)`
+  margin-top: 1.6rem !important;
+  margin-bottom: 3rem !important;
+
+  .MuiButton-label {
+    color: #5b3f40 !important;
+  }
 `;
 
 const Auth: React.FC = () => {
+  const upOverlayTitle = '오랜만이네요!';
+  const upOverlayContent = '어서 로그인해서 다시 시를 작성해봐요!';
+  const upOverlayButton = '회원가입하기';
+  const inOverlayTitle = '안녕하세요!';
+  const inOverlayContent = 'See In은 시를 작성하여 다른 사람들과 공유할 수 있는 서비스입니다.\nSee In은 시인과 발음이 비슷하고, 사물을 바라보는 시인의 모습을 담고 있습니다.';
+  const inOverlayButton = '로그인하기';
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogContentText, setDialogContentText] = useState('');
   const [open, setOpen] = useState(false);
+  const [overlayTitle, setOverlayTitle] = useState(inOverlayTitle);
+  const [overlayContent, setOverlayContent] = useState(inOverlayContent);
+  const [overlayButton, setOverlayButton] = useState(inOverlayButton);
+  const [animation, setAnimation] = useState(css``);
+  const isLeft = useRef(true);
+  const inPanel = useRef<HTMLDivElement>(null);
   const inEmail = useRef<HTMLInputElement>(null);
   const inPassword = useRef<HTMLInputElement>(null);
   const inButton = useRef<HTMLButtonElement>(null);
+  const upPanel = useRef<HTMLDivElement>(null);
   const upName = useRef<HTMLInputElement>(null);
   const upEmail = useRef<HTMLInputElement>(null);
   const upPassword = useRef<HTMLInputElement>(null);
   const upPasswordVerify = useRef<HTMLInputElement>(null);
   const upButton = useRef<HTMLButtonElement>(null);
+  const overlayItemContainer = useRef<HTMLDivElement>(null);
   const history = useHistory();
 
   const signIn = async () => {
@@ -72,6 +192,10 @@ const Auth: React.FC = () => {
         history.push('/');
       }
     } catch (err) {
+      if (!err.response.status) {
+        handleOpen('알 수 없는 오류', err.toString());
+        return;
+      }
       switch (err.response.status) {
         case StatusCodes.UNAUTHORIZED:
           handleOpen('로그인 오류', '비밀번호가 틀렸습니다.');
@@ -103,8 +227,13 @@ const Auth: React.FC = () => {
       });
       if (res.status === StatusCodes.OK) {
         handleOpen('회원가입 성공', '왼쪽에서 로그인을 해주세요.');
+        Cookies.save('signin', '1', {});
       }
     } catch (err) {
+      if (!err.response.status) {
+        handleOpen('알 수 없는 오류', err.toString());
+        return;
+      }
       switch (err.response.status) {
         case StatusCodes.BAD_REQUEST:
           handleOpen('회원가입 실패', err.response.data);
@@ -114,6 +243,57 @@ const Auth: React.FC = () => {
           break;
       }
     }
+  };
+
+  const changePanel = () => {
+    if (isLeft.current) {
+      setAnimation(
+        css`
+          animation: ${LeftToRight} 1s ease-in-out both;
+        `,
+      );
+      overlayItemContainer.current!.style.opacity = '0';
+      inPanel.current!.style.opacity = '0';
+      upPanel.current!.style.marginRight = '30%';
+      setTimeout(() => {
+        upPanel.current!.style.display = 'none';
+        inPanel.current!.style.display = 'flex';
+        inPanel.current!.style.marginLeft = '10%';
+      }, 500);
+      setTimeout(() => {
+        inPanel.current!.style.opacity = '1';
+      }, 550);
+      setTimeout(() => {
+        setOverlayTitle(upOverlayTitle);
+        setOverlayContent(upOverlayContent);
+        setOverlayButton(upOverlayButton);
+        overlayItemContainer.current!.style.opacity = '1';
+      }, 900);
+    } else {
+      setAnimation(
+        css`
+          animation: ${RightToLeft} 1s ease-in-out both;
+        `,
+      );
+      overlayItemContainer.current!.style.opacity = '0';
+      upPanel.current!.style.opacity = '0';
+      inPanel.current!.style.marginLeft = '30%';
+      setTimeout(() => {
+        inPanel.current!.style.display = 'none';
+        upPanel.current!.style.display = 'flex';
+        upPanel.current!.style.marginRight = '10%';
+      }, 500);
+      setTimeout(() => {
+        upPanel.current!.style.opacity = '1';
+      }, 550);
+      setTimeout(() => {
+        setOverlayTitle(inOverlayTitle);
+        setOverlayContent(inOverlayContent);
+        setOverlayButton(inOverlayButton);
+        overlayItemContainer.current!.style.opacity = '1';
+      }, 900);
+    }
+    isLeft.current = !isLeft.current;
   };
 
   const handleOpen = (title: string, contentText: string) => {
@@ -138,6 +318,29 @@ const Auth: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const signinCheck = async () => {
+      const signin = await Cookies.load('signin');
+      if (signin) {
+        isLeft.current = false;
+        setAnimation(
+          css`
+            animation: ${LeftToRight} 0s ease-in-out both;
+          `,
+        );
+        setOverlayTitle(upOverlayTitle);
+        setOverlayContent(upOverlayContent);
+        setOverlayButton(upOverlayButton);
+        inPanel.current!.style.marginLeft = '10%';
+        inPanel.current!.style.display = 'flex';
+        inPanel.current!.style.opacity = '1';
+        upPanel.current!.style.display = 'none';
+      }
+    };
+
+    signinCheck();
+  }, []);
+
   return (
     <Container>
       <Dialog open={open} onClose={handleClose}>
@@ -151,39 +354,36 @@ const Auth: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Panel>
-        <TextBoxWrapper>
-          <TextBoxEx type="email" label="이메일" inputRef={inEmail} onKeyPress={inSubmit} />
-        </TextBoxWrapper>
-        <TextBoxWrapper>
-          <TextBoxEx type="password" label="비밀번호" inputRef={inPassword} onKeyPress={inSubmit} />
-        </TextBoxWrapper>
-        <Button variant="contained" disableElevation onClick={signIn} ref={inButton}>
+      <Overlay animation={animation}>
+        <OverlayItemContainer ref={overlayItemContainer}>
+          <OverlayTitle>{overlayTitle}</OverlayTitle>
+          <OverlayContent>{overlayContent}</OverlayContent>
+          <OverlayButton variant="outlined" disableElevation onClick={changePanel}>
+            {overlayButton}
+          </OverlayButton>
+        </OverlayItemContainer>
+      </Overlay>
+      <InPanel ref={inPanel}>
+        <TextBoxEx type="email" label="이메일" inputRef={inEmail} onKeyPress={inSubmit} />
+        <TextBoxEx type="password" label="비밀번호" inputRef={inPassword} onKeyPress={inSubmit} />
+        <ButtonEx variant="outlined" disableElevation onClick={signIn} ref={inButton}>
           로그인
-        </Button>
-      </Panel>
-      <Panel>
-        <TextBoxWrapper>
-          <TextBoxEx type="text" label="닉네임" inputRef={upName} onKeyPress={upSubmit} />
-        </TextBoxWrapper>
-        <TextBoxWrapper>
-          <TextBoxEx type="email" label="이메일" inputRef={upEmail} onKeyPress={upSubmit} />
-        </TextBoxWrapper>
-        <TextBoxWrapper>
-          <TextBoxEx type="password" label="비밀번호" inputRef={upPassword} onKeyPress={upSubmit} />
-        </TextBoxWrapper>
-        <TextBoxWrapper>
-          <TextBoxEx
-            type="password"
-            label="비밀번호 확인"
-            inputRef={upPasswordVerify}
-            onKeyPress={upSubmit}
-          />
-        </TextBoxWrapper>
-        <Button variant="contained" disableElevation onClick={signUp} ref={upButton}>
+        </ButtonEx>
+      </InPanel>
+      <UpPanel ref={upPanel}>
+        <TextBoxEx type="text" label="닉네임" inputRef={upName} onKeyPress={upSubmit} />
+        <TextBoxEx type="email" label="이메일" inputRef={upEmail} onKeyPress={upSubmit} />
+        <TextBoxEx type="password" label="비밀번호" inputRef={upPassword} onKeyPress={upSubmit} />
+        <TextBoxEx
+          type="password"
+          label="비밀번호 확인"
+          inputRef={upPasswordVerify}
+          onKeyPress={upSubmit}
+        />
+        <ButtonEx variant="outlined" disableElevation onClick={signUp} ref={upButton}>
           회원가입
-        </Button>
-      </Panel>
+        </ButtonEx>
+      </UpPanel>
     </Container>
   );
 };

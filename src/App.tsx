@@ -8,7 +8,7 @@ import Router from './Router';
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Hi Melody';
-    src: url(/HiMelody-Regular.ttf);
+    src: url(/HiMelody-Regular.woff2);
   }
 
   body,

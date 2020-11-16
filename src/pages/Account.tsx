@@ -23,7 +23,9 @@ const Container = styled.div`
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
-    margin-top: 3rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2.7rem;
+    height: 17rem;
   }
 `;
 
@@ -35,6 +37,7 @@ const Panel = styled.div`
   width: 30%;
   flex-direction: column;
   transition: 0.4s ease-in-out;
+  margin: auto;
 
   @media screen and (max-width: 1024px) {
     width: 80%;
@@ -45,6 +48,10 @@ const InPanel = styled(Panel)`
   display: none;
   opacity: 0;
   margin-left: 10%;
+
+  @media screen and (max-width: 1024px) {
+    margin-top: 3rem;
+  }
 `;
 
 const UpPanel = styled(Panel)`
@@ -52,7 +59,7 @@ const UpPanel = styled(Panel)`
   margin-right: 10%;
 
   @media screen and (max-width: 1024px) {
-    margin-top: -0.3rem;
+    margin-top: -0.2rem;
   }
 `;
 
@@ -165,6 +172,14 @@ const ButtonEx = styled(Button)`
 
 const PanelButton = styled(Button)`
   display: none !important;
+  width: 3rem;
+  margin-top: -0.625rem !important;
+  margin-left: auto !important;
+
+  .MuiButton-label {
+    color: #aaaaaa !important;
+    font-size: 0.625rem !important;
+  }
 
   @media screen and (max-width: 1024px) {
     display: block !important;

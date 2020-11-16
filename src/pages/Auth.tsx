@@ -227,6 +227,7 @@ const Auth: React.FC = () => {
       });
       if (res.status === StatusCodes.OK) {
         handleOpen('회원가입 성공', '왼쪽에서 로그인을 해주세요.');
+        changePanel();
         Cookies.save('signin', '1', {});
       }
     } catch (err) {

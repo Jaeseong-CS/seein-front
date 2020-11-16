@@ -16,11 +16,17 @@ import DialogTitle from '../components/DialogTitle';
 const Card = styled.div`
   display: flex;
   margin: auto;
+  margin-bottom: 2rem;
   flex-flow: column;
   width: 13rem;
   border: 1px solid #ededf0;
   box-shadow: 12px 12px 12px #0000000a;
   background-color: #ffffff;
+  border-radius: 8px;
+
+  @media screen and (max-width: 1024px) {
+    border-radius: 0;
+  }
 `;
 
 const Title = styled.input`
@@ -46,7 +52,14 @@ const Container = styled.div`
 `;
 
 const ButtonEx = styled(Button)`
-  margin: 3rem !important;
+  margin: 3rem auto !important;
+
+  @media screen and (max-width: 1024px) {
+    position: fixed !important;
+    margin: 0 !important;
+    right: 10px;
+    bottom: 2.5rem;
+  }
 `;
 
 const Write: React.FC = () => {

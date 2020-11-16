@@ -329,7 +329,7 @@ const Auth: React.FC = () => {
       overlayItemContainer.current!.style.opacity = '0';
       upPanel.current!.style.opacity = '0';
       if (widthCheck) {
-        inPanel.current!.style.marginRight = '30%';
+        inPanel.current!.style.marginLeft = '30%';
         setTimeout(() => {
           setOverlayTitle(inOverlayTitle);
           setOverlayContent(inOverlayContent);

@@ -230,6 +230,7 @@ const Auth: React.FC = () => {
         refreshExpires.setTime(Date.now() + 1000 * 60 * 60 * 24 * 7);
         Cookies.save('accessToken', token.accessToken, { expires: accessExpires });
         Cookies.save('refreshToken', token.refreshToken, { expires: refreshExpires });
+        Cookies.save('signin', '1', {});
         history.push('/');
       }
     } catch (err) {

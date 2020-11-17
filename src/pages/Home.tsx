@@ -27,18 +27,23 @@ const Column = styled.div`
 `;
 
 const Home: React.FC = () => {
+  const [columnList, setColumnList] = useState<CardProps[][]>([]);
   const container = useRef<HTMLDivElement>(null);
   const page = useRef(1);
   const scrollCheck = useRef(false);
   const poemList = useRef<CardProps[][]>([]);
   const count = useRef(0);
-  const [columnList, setColumnList] = useState<CardProps[][]>([]);
+  const last = useRef(false);
 
   const addPoem = async () => {
+    if (last.current) {
+      return;
+    }
     if (container.current) {
       const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/v1/card/${page.current}`);
       if (res.status === StatusCodes.OK) {
         if (page.current > res.data.pagination.totalPages) {
+          last.current = true;
           return;
         }
         const width = Number.parseFloat(getComputedStyle(container.current).width.split('px')[0]);
@@ -73,8 +78,6 @@ const Home: React.FC = () => {
         setColumnList(poemList.current);
       }
       page.current += 1;
-    } else {
-      setColumnList([]);
     }
   };
 
